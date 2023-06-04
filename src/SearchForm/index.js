@@ -1,9 +1,23 @@
 import { useEffect, useDeferredValue } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 
+const getSortRecords = (records = [], type) => records.sort((a, b) => {
+    const nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
+    const isAce = type === 'asc' ? nameA < nameB : nameA > nameB
+
+    if (isAce) {
+        return -1
+    }
+
+    return 0
+})
+
 export const SearchForm = ({ data = [] }) => {
     const { setValue, register, resetField } = useFormContext();
-    const [usergender = '', userage = '', records = [], userQuery = ''] = useWatch({ name: ['usergender', 'userage', 'records', 'userQuery'] });
+    const [usergender = '', userage = '', records = [], userQuery = '', sorting] = useWatch({
+        name: ['usergender', 'userage', 'records', 'userQuery', 'sorting']
+    });
     const deferedQuery = useDeferredValue(userQuery)
 
     useEffect(() => {
@@ -27,38 +41,33 @@ export const SearchForm = ({ data = [] }) => {
 
     const hanldeSexSelect = ({ target: { value } }) => {
         resetField('userQuery');
-        setValue('records', data.filter(({ age, gender }) => {
+
+        const filterRecords = data.filter(({ age, gender }) => {
             const [min, max] = userage.split('-')
             const compareGender = gender === value;
 
             return userage ? age >= +min && age <= +max && compareGender : compareGender;
-        }))
+        })
+
+        setValue('records', getSortRecords(filterRecords, sorting || 'asc'))
     }
 
     const hanldeAgeSelect = ({ target: { value } }) => {
         resetField('userQuery')
-        const [min, max] = value.split('-');
 
-        setValue('records', data.filter(({ age, gender }) => {
+        const [min, max] = value.split('-');
+        const filteredRecords = data.filter(({ age, gender }) => {
             const compareAge = age <= +max && age >= +min;
 
             return usergender ? compareAge && usergender === gender : compareAge;
-        }));
+        });
+
+        setValue('records', getSortRecords(filteredRecords, sorting || 'asc'));
     }
 
     const handleSorting = ({ target: { value } }) => {
         resetField('userQuery')
-        setValue('records', records.sort((a, b) => {
-            const nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
-            const isAce = value === 'asc' ? nameA < nameB : nameA > nameB
-
-            if (isAce) {
-                return -1
-            }
-
-            return 0
-        }))
+        setValue('records', getSortRecords(records, value))
     }
 
     return <form>
