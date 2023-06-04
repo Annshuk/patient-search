@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Dashboard } from "Pages/Dashboard";
-import { PatientDetails } from "PatientDetails";
+import { PatientDetails } from "Pages/PatientDetails";
 
 const App = () => (
   <div className="App">

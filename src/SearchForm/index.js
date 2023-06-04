@@ -6,13 +6,14 @@ const getSortRecords = (records = [], type) => records.sort((a, b) => {
     const nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
     const isAce = type === 'asc' ? nameA < nameB : nameA > nameB
 
-    if (isAce) {
-        return -1
-    }
-
-    return 0
+    return isAce ? -1 : 0
 })
 
+
+/**
+ * SearchForm
+ *  
+ */
 export const SearchForm = ({ data = [] }) => {
     const { setValue, register, resetField } = useFormContext();
     const [usergender = '', userage = '', records = [], userQuery = '', sorting] = useWatch({
@@ -24,8 +25,9 @@ export const SearchForm = ({ data = [] }) => {
         let timer = '';
 
         if (deferedQuery) {
-            const queryString = deferedQuery.toLowerCase()
             timer = setTimeout(() => setValue('records', data.filter(({ first_name, last_name, patient_id, email }) => {
+                const queryString = deferedQuery.toLowerCase()
+
                 return [first_name.toLowerCase() === queryString,
                 last_name.toLowerCase() === queryString,
                 email.toLowerCase() === queryString,
