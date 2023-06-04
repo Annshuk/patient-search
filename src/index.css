@@ -1,13 +1,45 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.userTable {
+  width: 50%;
+  height: 600px;
+  overflow: auto;
+}
+
+table tr > td,
+th {
+  padding: 5px;
+}
+
+table thead tr {
+  background-color: grey;
+  color: beige;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: bisque;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: cornsilk;
+}
+
+table tbody tr:hover {
+  background-color: cadetblue;
+  color: wheat;
 }
