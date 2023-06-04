@@ -9,7 +9,6 @@ import { SearchForm } from "SearchForm";
 
 
 const App = () => {
-
   const methods = useForm()
   const { setValue } = methods;
 
