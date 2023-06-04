@@ -4,13 +4,10 @@ const initialState = {
     records: [], formPayload: { selectedRow: {} }
 }
 
-
 export const context = createContext(initialState)
 export const { Provider } = context;
 
 export const usePatientContext = () => useContext(context);
-
-
 
 const reducers = (state = initialState, action) => {
     const { type, payload } = action;

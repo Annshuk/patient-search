@@ -10,8 +10,6 @@ import { usePatientContext } from "PatientProvider";
 export const Dashboard = () => {
     const { state: { formPayload } } = usePatientContext();
 
-
-
     const methods = useForm({ defaultValues: formPayload })
     const { setValue } = methods;
 
