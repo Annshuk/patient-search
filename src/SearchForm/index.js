@@ -2,8 +2,8 @@ import { useEffect, useDeferredValue } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 
 export const SearchForm = ({ data = [] }) => {
-    const { setValue, register } = useFormContext();
-    const [usergender, userage, records = [], userQuery = ''] = useWatch({ name: ['usergender', 'userage', 'records', 'userQuery'] });
+    const { setValue, register, resetField } = useFormContext();
+    const [usergender = '', userage = '', records = [], userQuery = ''] = useWatch({ name: ['usergender', 'userage', 'records', 'userQuery'] });
     const deferedQuery = useDeferredValue(userQuery)
 
     useEffect(() => {
@@ -26,8 +26,9 @@ export const SearchForm = ({ data = [] }) => {
     }, [data, deferedQuery, setValue])
 
     const hanldeSexSelect = ({ target: { value } }) => {
+        resetField('userQuery');
         setValue('records', data.filter(({ age, gender }) => {
-            const [min, max] = userage.split('-');
+            const [min, max] = userage.split('-')
             const compareGender = gender === value;
 
             return userage ? age >= +min && age <= +max && compareGender : compareGender;
@@ -35,6 +36,7 @@ export const SearchForm = ({ data = [] }) => {
     }
 
     const hanldeAgeSelect = ({ target: { value } }) => {
+        resetField('userQuery')
         const [min, max] = value.split('-');
 
         setValue('records', data.filter(({ age, gender }) => {
@@ -45,6 +47,7 @@ export const SearchForm = ({ data = [] }) => {
     }
 
     const handleSorting = ({ target: { value } }) => {
+        resetField('userQuery')
         setValue('records', records.sort((a, b) => {
             const nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
             const nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
