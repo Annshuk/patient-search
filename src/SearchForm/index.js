@@ -6,8 +6,6 @@ export const SearchForm = ({ data = [] }) => {
     const [usergender, userage, records = [], userQuery = ''] = useWatch({ name: ['usergender', 'userage', 'records', 'userQuery'] });
     const deferedQuery = useDeferredValue(userQuery)
 
-    console.warn(deferedQuery)
-
     useEffect(() => {
         let timer = '';
 
@@ -63,7 +61,7 @@ export const SearchForm = ({ data = [] }) => {
     return <form>
         <fieldset>
             <label htmlFor="query">Query: </label>
-            <input type='text' { ...register('userQuery') } id="userQuery" />
+            <input type='text' { ...register('userQuery') } id="userQuery" /> OR { ' ' }
             <select  { ...register('usergender', { onChange: hanldeSexSelect }) } >
                 <option value=''>--Please Select--</option>
                 <option value='Male'>Male</option>
