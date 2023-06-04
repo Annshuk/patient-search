@@ -5,34 +5,21 @@ import { fetchRecords } from "services/fetchRecords";
 import { SearchTable } from "SearchTable";
 import { SearchForm } from "SearchForm";
 import { usePatientContext } from "PatientProvider";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Dashboard } from "Pages/Dashboard";
 
 
 
 
-const App = () => {
-  const { state: { formPayload } } = usePatientContext();
+const App = () => (
+  <div className="App">
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={ <Dashboard /> } />
+      </Routes>
+    </BrowserRouter>
+  </div >
+);
 
-  const methods = useForm({ defaultValues: formPayload })
-  const { setValue } = methods;
-
-  const { data = [], isLoading } = useQuery(['rec'], fetchRecords, {
-    onSuccess: (results) => {
-      setValue('records', results)
-    }
-  });
-
-  return (
-    <div className="App">
-      <FormProvider { ...methods }>
-        { !isLoading ?
-          <>
-            <SearchForm data={ data } />
-            <SearchTable />
-          </>
-          : null }
-      </FormProvider>
-    </div >
-  );
-}
 
 export default App;
