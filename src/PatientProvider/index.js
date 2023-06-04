@@ -15,12 +15,10 @@ export const usePatientContext = () => useContext(context);
 const reducers = (state = initialState, action) => {
     const { type, payload } = action;
 
-    console.warn(payload)
-
     return {
         records: () => ({ ...state, records: payload }),
         formPayload: () => ({ ...state, formPayload: payload })
-    }[type]
+    }[type]()
 }
 
 export const PatientProvider = ({ children }) => {

@@ -4,12 +4,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import { fetchRecords } from "services/fetchRecords";
 import { SearchTable } from "SearchTable";
 import { SearchForm } from "SearchForm";
+import { usePatientContext } from "PatientProvider";
 
 
 
 
 const App = () => {
-  const methods = useForm()
+  const { state: { formPayload } } = usePatientContext();
+
+  const methods = useForm({ defaultValues: formPayload })
   const { setValue } = methods;
 
   const { data = [], isLoading } = useQuery(['rec'], fetchRecords, {
