@@ -6,7 +6,7 @@ import { usePatientContext } from "PatientProvider"
 import { ConfirmModal } from "./ConfirmModal";
 
 export const PatientDetails = () => {
-    const { state: { formPayload: { selectedRow } } } = usePatientContext();
+    const { state: { formPayload, formPayload: { selectedRow, records } }, dispatch } = usePatientContext();
     const [modal, setModal] = useState(false);
     const navigate = useNavigate();
 
@@ -14,6 +14,13 @@ export const PatientDetails = () => {
 
     const confirmDelete = () => {
         setModal(!modal);
+        dispatch({
+            type: 'formPayload', payload: {
+                ...formPayload,
+                records: records.filter(({ patient_id }) => selectedRow.patient_id !== patient_id)
+            }
+        })
+
         navigate('/')
     }
 
