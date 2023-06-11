@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
 
 const initialState = {
-    records: [], formPayload: { selectedRow: {} }
+    records: [], formPayload: { selectedRow: {}, records: [] }
 }
 
 export const context = createContext(initialState)

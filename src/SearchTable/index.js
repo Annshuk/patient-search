@@ -15,8 +15,10 @@ export const SearchTable = memo(() => {
         name: ['usergender', 'userage', 'records', 'userQuery', 'sorting']
     });
 
+
+
     useEffect(() => {
-        formPayload?.records && setValue('records', formPayload.records)
+        !!formPayload?.records.length && setValue('records', formPayload.records)
     }, [formPayload?.records, setValue])
 
     const handleClick = (selectedRow = {}) => {

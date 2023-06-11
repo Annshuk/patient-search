@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Table } from "reactstrap"
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,10 @@ export const PatientDetails = () => {
     const navigate = useNavigate();
 
     const toggle = () => setModal(!modal);
+
+    useEffect(() => {
+        !formPayload.records.length && navigate('/')
+    }, [formPayload, navigate])
 
     const confirmDelete = () => {
         setModal(!modal);
