@@ -1,4 +1,4 @@
-import { useEffect, useDeferredValue } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 
 const getSortRecords = (records = [], type) => records.sort((a, b) => {
@@ -16,33 +16,21 @@ const getSortRecords = (records = [], type) => records.sort((a, b) => {
  */
 export const SearchForm = ({ data = [] }) => {
     const { setValue, register, resetField } = useFormContext();
-    const [usergender = '', userage = '', records = [], userQuery = '', sorting] = useWatch({
+
+    const [usergender = '', userage = '', records = [], userQuery, sorting] = useWatch({
         name: ['usergender', 'userage', 'records', 'userQuery', 'sorting']
     });
-    const deferedQuery = useDeferredValue(userQuery)
+    const recordsRef = useRef(records)
 
     useEffect(() => {
-        let timer = '';
+        const timeOutId = userQuery && setTimeout(() => setValue('records', recordsRef.current), 500);
 
-        if (deferedQuery) {
-            timer = setTimeout(() => setValue('records', data.filter(({ first_name, last_name, patient_id, email }) => {
-                const queryString = deferedQuery.toLowerCase()
+        return () => clearTimeout(timeOutId);
+    }, [data, setValue, userQuery]);
 
-                return [first_name.toLowerCase() === queryString,
-                last_name.toLowerCase() === queryString,
-                email.toLowerCase() === queryString,
-                +deferedQuery === patient_id].some(item => item)
-            })), 500)
-        }
-
-        return () => {
-            clearTimeout(timer)
-            !!data.length && setValue('records', data)
-        }
-    }, [data, deferedQuery, setValue])
 
     const hanldeSexSelect = ({ target: { value } }) => {
-        resetField('userQuery');
+        setValue('userQuery', '');
 
         const filterRecords = data.filter(({ age, gender }) => {
             const [min, max] = userage.split('-')
@@ -55,7 +43,7 @@ export const SearchForm = ({ data = [] }) => {
     }
 
     const hanldeAgeSelect = ({ target: { value } }) => {
-        resetField('userQuery')
+        setValue('userQuery', '');
 
         const [min, max] = value.split('-');
         const filteredRecords = data.filter(({ age, gender }) => {
@@ -72,10 +60,28 @@ export const SearchForm = ({ data = [] }) => {
         setValue('records', getSortRecords(records, value))
     }
 
+    const handleChange = ({ target: { value } }) => {
+        resetField('usergender')
+        resetField('userage')
+
+        if (!value) {
+            setValue('records', data)
+        }
+
+        recordsRef.current = data.filter(({ first_name, last_name, patient_id, email }) => {
+            const queryString = value.toLowerCase()
+
+            return [first_name.toLowerCase() === queryString,
+            last_name.toLowerCase() === queryString,
+            email.toLowerCase() === queryString,
+            +value === patient_id].some(item => item)
+        })
+    }
+
     return <form>
         <fieldset>
             <label htmlFor="query">Query: </label>
-            <input type='text' { ...register('userQuery') } id="userQuery" /> OR { ' ' }
+            <input type='text' { ...register('userQuery', { onChange: handleChange }) } id="userQuery" /> OR { ' ' }
             <select  { ...register('usergender', { onChange: hanldeSexSelect }) } >
                 <option value=''>--Please Select--</option>
                 <option value='Male'>Male</option>

@@ -19,13 +19,13 @@ export const SearchTable = memo(() => {
         formPayload?.records && setValue('records', formPayload.records)
     }, [formPayload?.records, setValue])
 
-    const handleClick = (item = {}) => {
+    const handleClick = (selectedRow = {}) => {
         dispatch({
             type: 'formPayload',
-            payload: { usergender, userage, userQuery, sorting, selectedRow: item, records }
+            payload: { usergender, userage, userQuery, sorting, selectedRow, records }
         });
 
-        navigate(`/${item.patient_id}`)
+        navigate(`/${selectedRow.patient_id}`)
     }
 
     return <>
