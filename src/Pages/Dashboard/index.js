@@ -13,7 +13,7 @@ export const Dashboard = () => {
     const methods = useForm({ defaultValues: formPayload })
     const { setValue } = methods;
 
-    const { data = [], isLoading } = useQuery(['rec'], fetchRecords, {
+    const { data = [], isLoading } = useQuery(['recordsList'], fetchRecords, {
         onSuccess: (results) => {
             setValue('records', results)
         }
