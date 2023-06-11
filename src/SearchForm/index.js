@@ -20,7 +20,7 @@ export const SearchForm = ({ data = [] }) => {
     const [usergender = '', userage = '', records = [], userQuery, sorting] = useWatch({
         name: ['usergender', 'userage', 'records', 'userQuery', 'sorting']
     });
-    const recordsRef = useRef(records)
+    const recordsRef = useRef(records);
 
     useEffect(() => {
         const timeOutId = userQuery && setTimeout(() => setValue('records', recordsRef.current), 500);
@@ -56,7 +56,7 @@ export const SearchForm = ({ data = [] }) => {
     }
 
     const handleSorting = ({ target: { value } }) => {
-        setValue('usergender', '');
+        setValue('userQuery', '');
         setValue('records', getSortRecords(records, value))
     }
 
