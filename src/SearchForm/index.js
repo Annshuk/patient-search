@@ -15,7 +15,7 @@ const getSortRecords = (records = [], type) => records.sort((a, b) => {
  *  
  */
 export const SearchForm = ({ data = [] }) => {
-    const { setValue, register, resetField } = useFormContext();
+    const { setValue, register } = useFormContext();
 
     const [usergender = '', userage = '', records = [], userQuery, sorting] = useWatch({
         name: ['usergender', 'userage', 'records', 'userQuery', 'sorting']
@@ -56,16 +56,16 @@ export const SearchForm = ({ data = [] }) => {
     }
 
     const handleSorting = ({ target: { value } }) => {
-        resetField('userQuery')
+        setValue('usergender', '');
         setValue('records', getSortRecords(records, value))
     }
 
     const handleChange = ({ target: { value } }) => {
-        resetField('usergender')
-        resetField('userage')
+        setValue('usergender', '');
+        setValue('userage', '');
 
         if (!value) {
-            setValue('records', data)
+            setValue('records', data);
         }
 
         recordsRef.current = data.filter(({ first_name, last_name, patient_id, email }) => {
