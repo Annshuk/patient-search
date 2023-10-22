@@ -11,7 +11,7 @@ export const ConfirmModal = ({ isOpen, onClick, selected }) => {
             <Button color="primary" onClick={ onClick }>
                 Delete
             </Button>{ ' ' }
-            <Button color="secondary" onClick={ onClick }>
+            <Button color="secondary">
                 Cancel
             </Button>
         </ModalFooter>
